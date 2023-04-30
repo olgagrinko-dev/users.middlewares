@@ -1,11 +1,11 @@
 const express = require('express');
-const { getAllUsers, getUserById, createUserById, upUserById, deleteUserById } = require('../service/user.service.js')
+const { getAllUser, getUserById, createUser, updataUser, deleteUser } = require('../service/user.service');
 
 const router = express.Router();
 
 router.get('/', (request, response) => {
     try {
-        const data = getAllUsers()
+        const data = getAllUser();
         response.send(data);
     } catch (error) {
         response.send(error.message);
@@ -25,7 +25,7 @@ router.get('/:id', (request, response) => {
 router.post('/', (request, response) => {
     try {
         const { name, surname, email, pwd } = request.body;
-        const data = createUserById(name, surname, email, pwd);
+        const data = createUser(name, surname, email, pwd);
         response.send(data);
     } catch (error) {
         response.send(error.message);
@@ -36,21 +36,22 @@ router.put('/:id', (request, response) => {
     try {
         const { id } = request.params;
         const { name, surname, email, pwd } = request.body;
-        const data = upUserById(id, name, surname, email, pwd);
+        const data = updataUser(id, name, surname, email, pwd);
         response.send(data);
     } catch (error) {
         response.send(error.message);
     }
 });
+
 
 router.delete('/:id', (request, response) => {
     try {
         const { id } = request.params;
-        const data = deleteUserById(id);
+        const data = deleteUser(id);
         response.send(data);
     } catch (error) {
         response.send(error.message);
     }
 });
 
-module.exports = { router };
+module.exports = router;

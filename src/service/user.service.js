@@ -1,59 +1,55 @@
-const array = [
-    {"id": 1, "name": "Hanna", "surname": "Pleshko", "email": "hannapleshko@gmail.com", "pwd": "12345678"},
-    {"id": 2, "name": "Есения", "surname": "Грант", "email": "yesgrant@mail.ru", "pwd": "12345678"},
-    {"id": 3, "name": "Анастасия", "surname": "Павлова", "email": "pavlova@gmail.com", "pwd": "12345678"},
-    {"id": 4, "name": "Мария", "surname": "Гардон", "email": "gardon@mail.ru", "pwd": "12345678"},
-    {"id": 5, "name": "Марта", "surname": "Котикова", "email": "martaktik@gmail.com", "pwd": "12345678"},
-    {"id": 6, "name": "Борис", "surname": "Юревич", "email": "testdata@gmail.com", "pwd": "12345678"},
-    {"id": 7, "name": "Рыжик", "surname": "Рыжий", "email": "email@gmail.com", "pwd": "12345678"},
-    {"id": 8, "name": "Рейна", "surname": "Собачкова", "email": "dogdoggav@mail.ru", "pwd": "12345678"},
-    {"id": 9, "name": "Максим", "surname": "Николаев", "email": "hanna@gmail.com", "pwd": "12345678"},
-    {"id": 10, "name": "Константин", "surname": "Константинов", "email": "konst@mail.ru", "pwd": "12345678"},
-    {"id": 11, "name": "Иван", "surname": "Иванов", "email": "ivaniv@gmail.com", "pwd": "12345678"},
-    {"id": 12, "name": "Николай", "surname": "Николаев", "email": "nikkkk@mail.ru", "pwd": "12345678"}
-];
+const fs = require('fs');
 
-function getAllUsers() {
+const path = './storage/storage.json';
+
+function getAllUser() {
     if (!array.length) throw new Error('Массив пуст');
+    const array = JSON.parse(fs.readFileSync(path));
     return array;
 };
 
 function getUserById(id) {
-    const filtered = array.filter((elem) => elem.id == id);
+    const array = JSON.parse(fs.readFileSync(path));
+    const filtered = array.filter(elem => elem.id == id);
     if (!filtered.length) throw new Error('Такого id нет');
     return filtered;
 };
 
-function createUserById(name, surname, email, pwd) {
-    const filtered = array.filter((elem) => elem.email == email);
-    if (filtered.length) throw new Error('такой email уже есть');
+function createUser(name, surname, email, pwd) {
+    const array = JSON.parse(fs.readFileSync(path));
+    if (array.length) throw new Error('такой email уже есть');
     array.push({
         id: array.length + 1,
-        name: name,
-        surname: surname,
-        email: email,
-        pwd: pwd
+        name,
+        surname,
+        email,
+        pwd
     });
+    fs.writeFileSync(path, JSON.stringify(array));
     return array;
 };
 
-function upUserById(id, name, surname, email, pwd) {
-    const filtered = array.filter((elem) => elem.id != id);
+function updataUser(id, name, surname, email, pwd) {
+    const array = JSON.parse(fs.readFileSync(path));
+    const filtered = array.filter(elem => elem.id != id);
     if (filtered.length == array.length) throw new Error('такого id нет');
     filtered.push({
-        id: id,
-        name: name,
-        surname: surname,
-        email: email,
-        pwd: pwd
+        id,
+        name,
+        surname,
+        email,
+        pwd
     });
+    fs.writeFileSync(path, JSON.stringify(filtered));
     return filtered;
 };
 
-function deleteUserById(id) {
-    const filtered = array.filter((elem) => elem.id != id);
+function deleteUser(id) {
+    const array = JSON.parse(fs.readFileSync(path));
+    const filtered = array.filter(elem => elem.id != id);   
     if (filtered.length == array.length) throw new Error('Такого id нет');
+    fs.writeFileSync(path, JSON.stringify(filtered));
     return filtered;
 };
 
-module.exports = { getAllUsers, getUserById, createUserById, upUserById, deleteUserById };
+module.exports = { getAllUser, getUserById, createUser, updataUser, deleteUser };
