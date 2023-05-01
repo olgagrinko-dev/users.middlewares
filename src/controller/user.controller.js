@@ -1,56 +1,57 @@
 const express = require('express');
 const { getAllUser, getUserById, createUser, updataUser, deleteUser } = require('../service/user.service');
+const { isValidUserData, isValidUserId } = require('../helper/validation');
+const { buildResponse } = require('../helper/buildResponse');
 
 const router = express.Router();
 
 router.get('/', (request, response) => {
     try {
         const data = getAllUser();
-        response.send(data);
+        buildResponse(response, data, 200);
     } catch (error) {
-        response.send(error.message);
+        buildResponse(response, error.message, 400);
     }
 });
 
-router.get('/:id', (request, response) => {
+router.get('/:id', isValidUserId, (request, response) => {
     try {
         const { id } = request.params;
         const data = getUserById(id);
-        response.send(data);
+        buildResponse(response, data, 200);
     } catch (error) {
-        response.send(error.message);
+        buildResponse(response, error.message, 400);
     }
 });
 
-router.post('/', (request, response) => {
+router.post('/', isValidUserData, (request, response) => {
     try {
         const { name, surname, email, pwd } = request.body;
         const data = createUser(name, surname, email, pwd);
-        response.send(data);
+        buildResponse(response, data, 200);
     } catch (error) {
-        response.send(error.message);
+        buildResponse(response, error.message, 400);
     }
 });
 
-router.put('/:id', (request, response) => {
+router.put('/:id', isValidUserData, isValidUserId, (request, response) => {
     try {
         const { id } = request.params;
         const { name, surname, email, pwd } = request.body;
         const data = updataUser(id, name, surname, email, pwd);
-        response.send(data);
+        buildResponse(response, data, 200);
     } catch (error) {
-        response.send(error.message);
+        buildResponse(response, error.message, 400);
     }
 });
 
-
-router.delete('/:id', (request, response) => {
+router.delete('/:id', isValidUserId, (request, response) => {
     try {
         const { id } = request.params;
         const data = deleteUser(id);
-        response.send(data);
+        buildResponse(response, data, 200);
     } catch (error) {
-        response.send(error.message);
+        buildResponse(response, error.message, 400);
     }
 });
 

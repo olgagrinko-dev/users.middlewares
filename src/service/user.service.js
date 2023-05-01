@@ -3,21 +3,21 @@ const fs = require('fs');
 const path = './storage/storage.json';
 
 function getAllUser() {
-    if (!array.length) throw new Error('Массив пуст');
     const array = JSON.parse(fs.readFileSync(path));
+    if (!array.length) throw new Error('Array is empty');
     return array;
 };
 
 function getUserById(id) {
     const array = JSON.parse(fs.readFileSync(path));
     const filtered = array.filter(elem => elem.id == id);
-    if (!filtered.length) throw new Error('Такого id нет');
+    if (!filtered.length) throw new Error('There is no such id');
     return filtered;
 };
 
 function createUser(name, surname, email, pwd) {
     const array = JSON.parse(fs.readFileSync(path));
-    if (array.length) throw new Error('такой email уже есть');
+    if (array.length) throw new Error('This email already exists');
     array.push({
         id: array.length + 1,
         name,
@@ -32,7 +32,7 @@ function createUser(name, surname, email, pwd) {
 function updataUser(id, name, surname, email, pwd) {
     const array = JSON.parse(fs.readFileSync(path));
     const filtered = array.filter(elem => elem.id != id);
-    if (filtered.length == array.length) throw new Error('такого id нет');
+    if (filtered.length == array.length) throw new Error('There is no such id');
     filtered.push({
         id,
         name,
@@ -46,8 +46,8 @@ function updataUser(id, name, surname, email, pwd) {
 
 function deleteUser(id) {
     const array = JSON.parse(fs.readFileSync(path));
-    const filtered = array.filter(elem => elem.id != id);   
-    if (filtered.length == array.length) throw new Error('Такого id нет');
+    const filtered = array.filter(elem => elem.id != id);
+    if (filtered.length == array.length) throw new Error('There is no such id');
     fs.writeFileSync(path, JSON.stringify(filtered));
     return filtered;
 };
