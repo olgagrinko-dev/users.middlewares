@@ -23,7 +23,7 @@ class User {
             name,
             surname,
             email,
-            pwd
+            pwd,
         });
         fs.writeFileSync(this.path, JSON.stringify(array));
         return array;
@@ -38,7 +38,7 @@ class User {
             name,
             surname,
             email,
-            pwd
+            pwd,
         });
         fs.writeFileSync(this.path, JSON.stringify(filtered));
         return filtered;
